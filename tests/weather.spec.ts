@@ -68,7 +68,29 @@ test('Verify 200 status code, body contains weather data, use city ID', async ({
 });
 
 test('test3', async ({request}) => {
-    const response = await request.get(`https://api.openweathermap.org/data/2.5/weather?q=Kawagoe&appid=${process.env.APPID}`);
+    //const response = await request.get(`https://api.openweathermap.org/data/2.5/weather?q=Kawagoe&appid=${process.env.APPID}`);
+    const response = await request.get(`https://api.openweathermap.org/data/2.5/forecast?q=kawagoe&appid=${process.env.APPID}`);
     expect(response.ok()).toBeTruthy();
+
+    const responseBody = await response.json();
+
+    console.log(responseBody.list[1].weather)
+
+    //go through the list
+    for(let i = 0; i < responseBody.list.length; i++){
+        //expect(hasData(responseBody.list[i].main, 'name')).toBe(true)
+    
+        //Check to see if the temp datat (it's in the main object)
+        for(let key in responseBody.list[i].main){
+            expect(hasData(responseBody.list[i].main, key)).toBe(true);
+        }
+
+        //go through the weather (an array of objects)
+        for(let j = 0; j < responseBody.list[i].weather.length; j++){
+            for(let key in responseBody.list[i].weather){
+                expect(hasData(responseBody.list[i].weather, key)).toBe(true);
+            }
+        }
+    }
 
 });
