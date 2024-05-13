@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import 'dotenv/config'
 
 test('Verify 200 status code, body contains weather data', async ({page, request}) => {
+    //Using Kawagoe as the city query 
     const response = await request.get(`https://api.openweathermap.org/data/2.5/weather?q=Kawagoe&appid=${process.env.APPID}`);
     expect(response.ok()).toBeTruthy();
     
@@ -34,5 +35,12 @@ test('Verify 200 status code, body contains weather data', async ({page, request
             expect(hasData(responseBody.weather[i], key)).toBe(true);
         }
     } 
+
+});
+test('test2', async ({request}) => {
+
+});
+
+test('test3', async ({request}) => {
 
 });
