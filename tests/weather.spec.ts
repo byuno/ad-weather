@@ -30,8 +30,9 @@ test('Verify 200 status code, body contains weather data', async ({page, request
     let weatherArrLength =responseBody.weather.length
     
     for(let i = 0; i < weatherArrLength; i++){
-        for(let key in responseBody.weather[0]){
-            expect(hasData(responseBody.weather[0], key)).toBe(true);
+        for(let key in responseBody.weather[i]){
+            expect(hasData(responseBody.weather[i], key)).toBe(true);
         }
     } 
+
 });
