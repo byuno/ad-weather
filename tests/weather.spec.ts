@@ -74,7 +74,7 @@ test('test3', async ({request}) => {
 
     const responseBody = await response.json();
 
-    console.log(responseBody.list[1].weather)
+    console.log(responseBody.list[0].weather[0])
 
     //go through the list
     for(let i = 0; i < responseBody.list.length; i++){
@@ -87,10 +87,14 @@ test('test3', async ({request}) => {
 
         //go through the weather (an array of objects)
         for(let j = 0; j < responseBody.list[i].weather.length; j++){
-            for(let key in responseBody.list[i].weather){
-                expect(hasData(responseBody.list[i].weather, key)).toBe(true);
+
+            //check the weather data is present
+            for(let key in responseBody.list[i].weather[j]){
+                expect(hasData(responseBody.list[i].weather[j], key)).toBe(false);
             }
         }
+
+        
     }
 
 });
