@@ -6,25 +6,32 @@ test('Verify 200 status code, body contains weather data', async ({page, request
     expect(response.ok()).toBeTruthy();
     
     const responseBody = await response.json();
-    console.log(responseBody);
-})
+   
+    // Checks if the key exists in the object
+    function hasData(obj, key) {
+    if (obj.hasOwnProperty(key)) {
+        // Check if the value associated with the key is not null, undefined, or an empty string
+        return obj[key] !== null && obj[key] !== undefined && obj[key] !== '';
+        }
+        return false; // Key doesn't exist in the object
+    }
 
+    //Checks to see if there is data for the city name
+    expect(hasData(responseBody, 'name')).toBe(true)
+    
+    //Checks to see if there is datat temp, pressure, humidity, etc.
+    for(let key in responseBody.main){
+        expect(hasData(responseBody.main, key)).toBe(true);
+    }
 
-// test("retrieves weather data", async ({ request }) => {
-//     const url = "https://api.openweathermap.org/data/2.5/weather?q=London&appid=YOUR_API_KEY";
-//     const response = await request.get(url);
+    //Checks to see if there is data for the weather conditions. Because of the array, assuming
+    //there could be more than one
 
-//     // Check status code
-//     expect(response.status()).toBe(200);
-
-//     // Check content type (optional)
-//     expect(response.headers()["content-type"]).toContain("application/json");
-
-//     // Parse the response body as JSON
-//     const weatherData = await response.json();
-
-//     // Example assertions (customize based on your needs)
-//     expect(weatherData.main.temp).toBeDefined(); // Temperature
-//     expect(weatherData.wind.speed).toBeDefined(); // Wind speed
-//     // Add more assertions as needed
-// });
+    let weatherArrLength =responseBody.weather.length
+    
+    for(let i = 0; i < weatherArrLength; i++){
+        for(let key in responseBody.weather[0]){
+            expect(hasData(responseBody.weather[0], key)).toBe(true);
+        }
+    } 
+});
