@@ -37,8 +37,14 @@ test('Verify 200 status code, body contains weather data', async ({page, request
     } 
 
 });
-test('test2', async ({request}) => {
 
+test('test2', async ({request}) => {
+    
+    const response = await request.get(`https://api.openweathermap.org/data/2.5/weather?id=1859740&appid=${process.env.APPID}`);
+    expect(response.ok()).toBeTruthy();
+    
+    const responseBody = await response.json();
+   console.log(responseBody)
 });
 
 test('test3', async ({request}) => {
