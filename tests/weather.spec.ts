@@ -7,7 +7,7 @@ test('Verify 200 status code, body contains weather data', async ({page, request
     
     const responseBody = await response.json();
    
-    // Checks if the key exists in the object
+    // Checks if the key has data
     function hasData(obj, key) {
     if (obj.hasOwnProperty(key)) {
         // Check if the value associated with the key is not null, undefined, or an empty string
