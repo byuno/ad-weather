@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import 'dotenv/config'
 
-    // Checks if the key has data
+// Checks if the key has data
 function hasData(obj, key) {
     if (obj.hasOwnProperty(key)) {
         // Check if the value associated with the key is not null, undefined, or an empty string
@@ -74,7 +74,7 @@ test('test3', async ({request}) => {
 
     const responseBody = await response.json();
 
-    console.log(responseBody.list[0].weather[0])
+    console.log(responseBody.list[0].wind)
 
     //go through the list
     for(let i = 0; i < responseBody.list.length; i++){
@@ -90,11 +90,14 @@ test('test3', async ({request}) => {
 
             //check the weather data is present
             for(let key in responseBody.list[i].weather[j]){
-                expect(hasData(responseBody.list[i].weather[j], key)).toBe(false);
+                expect(hasData(responseBody.list[i].weather[j], key)).toBe(true);
             }
         }
 
-        
+        //Checks to see if wind data is present
+        for(let key in responseBody.list[i].wind){
+            expect(hasData(responseBody.list[i].wind, key)).toBe(true);
+        }
     }
 
 });
