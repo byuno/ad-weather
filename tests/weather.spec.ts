@@ -13,6 +13,7 @@ function hasData(obj, key) {
 test('Verify 200 status code, body contains weather data', async ({page, request}) => {
     //Using Kawagoe as the city query 
     const response = await request.get(`https://api.openweathermap.org/data/2.5/weather?q=Kawagoe&appid=${process.env.APPID}`);
+    //checks the status code
     expect(response.ok()).toBeTruthy();
     
     const responseBody = await response.json();
@@ -43,6 +44,7 @@ test('Verify 200 status code, body contains weather data, use city ID', async ({
     
     //Get the weather details using a city ID
     const response = await request.get(`https://api.openweathermap.org/data/2.5/weather?id=1859740&appid=${process.env.APPID}`);
+    //checks the status code
     expect(response.ok()).toBeTruthy();
     
     const responseBody = await response.json();
@@ -67,19 +69,18 @@ test('Verify 200 status code, body contains weather data, use city ID', async ({
     } 
 });
 
-test('test3', async ({request}) => {
+test('Verify 200 status code, verify a 5 day forecast by using city name', async ({request}) => {
     //const response = await request.get(`https://api.openweathermap.org/data/2.5/weather?q=Kawagoe&appid=${process.env.APPID}`);
     const response = await request.get(`https://api.openweathermap.org/data/2.5/forecast?q=kawagoe&appid=${process.env.APPID}`);
+    //checks the status code
     expect(response.ok()).toBeTruthy();
 
     const responseBody = await response.json();
 
-    console.log(responseBody.list[0].wind)
-
-    //go through the list
+    //go through the list of weather data
     for(let i = 0; i < responseBody.list.length; i++){
         //expect(hasData(responseBody.list[i].main, 'name')).toBe(true)
-    
+
         //Check to see if the temp datat (it's in the main object)
         for(let key in responseBody.list[i].main){
             expect(hasData(responseBody.list[i].main, key)).toBe(true);
@@ -87,7 +88,6 @@ test('test3', async ({request}) => {
 
         //go through the weather (an array of objects)
         for(let j = 0; j < responseBody.list[i].weather.length; j++){
-
             //check the weather data is present
             for(let key in responseBody.list[i].weather[j]){
                 expect(hasData(responseBody.list[i].weather[j], key)).toBe(true);
